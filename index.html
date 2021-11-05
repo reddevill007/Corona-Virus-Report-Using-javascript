@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COVID 19 Tracker</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        min-height: 100vh;
+        gap: 30px;
+        color: #fff;
+        background: #000;
+    }
+
+    input {
+        height: 40px;
+        padding: 5px;
+    }
+</style>
+<body>
+    <h1>COVID 19 Tracker</h1>
+    <form id="myForm">
+        <input type="text" placeholder="Country Name" required id="country">
+        <input type="submit" value="Get Data">
+    </form>
+    <h1 id="confirmed">Total Confirmed: </h1>
+    <h1 id="active">Total Active: </h1>
+    <h1 id="recover">Total Recovered: </h1>
+    <h1 id="death">Total Deaths: </h1>
+
+    <script>
+        var myForm = document.getElementById('myForm')
+        
+        myForm.addEventListener('submit', function(e){
+            e.preventDefault()
+            var country = document.getElementById('country').value
+            // Fetch request to get covid 19 data
+
+            var url = `https://api.covid19api.com/dayone/country/${country}`
+
+            fetch(url)
+            .then((res) => res.json())
+            .then((res) => {
+                // console.log(res)
+                var length = res.length
+                var index = length - 1
+                var confirmed = document.getElementById('confirmed')
+                var active = document.getElementById('active')
+                var recover = document.getElementById('recover')
+                var death = document.getElementById('death')
+
+                confirmed.innerHTML = 'Total Confirmed: '
+                active.innerHTML = 'Total Active: '
+                recover.innerHTML = 'Total Recovered: '
+                death.innerHTML = 'Total Deaths: '
+
+                confirmed.append(res[index].Confirmed)
+                active.append(res[index].Active)
+                recover.append(res[index].Recovered)
+                death.append(res[index].Deaths)
+            })
+        })
+    </script>
+</body>
+</html>
